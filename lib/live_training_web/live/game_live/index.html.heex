@@ -1,0 +1,46 @@
+<h2>Games List <span class="float-right"><%= live_patch "Rate Games", to: Routes.survey_index_path(@socket, :index) %></span></h2>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.game_index_path(@socket, :index)}>
+    <.live_component
+      module={LiveTrainingWeb.GameLive.FormComponent}
+      id={@game.id || :new}
+      title={@page_title}
+      action={@live_action}
+      game={@game}
+      return_to={Routes.game_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Rating</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody id="games">
+    <%= for game <- @games do %>
+      <tr id={"game-#{game.id}"}>
+        <td><%= game.id %></td>
+        <td><%= game.name %></td>
+        <td>
+          <%= if rating = List.first(game.ratings) do %>
+            <LiveTrainingWeb.SurveyLive.RatingLive.Show.stars_without_game_name rating={rating} game={game} />
+          <% else %>
+            Not rated yet!
+          <% end %>
+        </td>
+        <td>
+          <span><%= live_patch "Edit", to: Routes.game_index_path(@socket, :edit, game) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: game.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Game", to: Routes.game_index_path(@socket, :new) %></span>

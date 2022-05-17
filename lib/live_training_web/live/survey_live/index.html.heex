@@ -1,0 +1,4 @@
+<h2>Survey <span class="float-right"><%= live_patch "Games List", to: Routes.game_index_path(@socket, :index) %></span></h2>
+
+<LiveTrainingWeb.SurveyLive.RatingLive.Index.games games={@games}
+      current_user={@current_user} />
