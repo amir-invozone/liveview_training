@@ -137,4 +137,12 @@ defmodule LiveTraining.Accounts.User do
       add_error(changeset, :current_password, "is not valid")
     end
   end
+
+  def login_changeset(user, attrs, _opts \\ []) do
+    user
+    |> cast(attrs, [:email, :password])
+    |> validate_required([:email, :password])
+    |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
+    |> validate_length(:email, max: 160)
+  end
 end

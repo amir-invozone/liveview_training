@@ -63,9 +63,9 @@ defmodule LiveTrainingWeb.Router do
   scope "/", LiveTrainingWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
-    get "/users/register", UserRegistrationController, :new
-    post "/users/register", UserRegistrationController, :create
-    get "/users/log_in", UserSessionController, :new
+    live "/users/register", UserRegistrationLive.New, :new, as: :user_registration
+    live "/users/log_in", UserSessionLive.New, :new, as: :user_session
+
     post "/users/log_in", UserSessionController, :create
     get "/users/reset_password", UserResetPasswordController, :new
     post "/users/reset_password", UserResetPasswordController, :create
